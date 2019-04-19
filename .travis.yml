@@ -1,0 +1,22 @@
+services:
+  - docker
+
+language: generic
+
+script:
+  - make build
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=oinker/zazu-dash
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker push $REPO
+
+env:
+  global:
+    - secure: "Fyb9/AkKLHvJPpXrRmMD4Cwd0nULmQcNnJDF2EU9WmuQLE1UJss6h2pTZO2pE1YSt+1loJIlnZALnptg7slwtqfhWjsEDXKBozZJyFLWGdSXSRn89EpvaMJTZxeZfbU+H/gLQhkc7KwutzohsmGk6Nqc/gbAHeDOseYR40z9Z3ewO3x3htR29tI/zI7KHQgGdfjOmsDt3f+K+VJuRBhrZ2x15ihXLdzTFCnDxYF+9sETBTh91BIjFtiDL/7im6nxmTpUHWysa4zLS1nWwgWK2uSuGn6hBtfh7Pk/96wAtdd2lZs0G5/qCyTfqWONF2jQ3K6x7nXfFHJccHCgb0cT7pK6G60qPJTL/+AcrpCOGP8c+7eXUflBDKEPwvypZo+ByR8wyi7YbkaG72GNTvU4lZpwEU4taZiA3gnj2PRnO+XBqo4CfubUuCESGg2gcCmK86+R5GtibrVoNvgF4PBdAvU7YGNiy+gDZWqSNbAX+37KgqsjiJQH+hBnRkhojjt4eKASrcXgStLp0sGKj7/4CbYY9zWIiMa1d5/BQHXASWhBTJ2zNkkmaZmBhjLvQ7iftFQ2S69QMwsOqyAnTJ7Arqn55uEd9eT8Wo1uq8Ysp1GM0dKZh0G4/pLV9KKcXpm3erWJncSMC7RYVoPCuxSJrGkO4AKVf+hvmASRZdrJzco=" # DOCKER_EMAIL
+    - secure: "FeAdSZDX5FUiKmy2cuI+Bii7Szv4sfq07/aJuV4EmpSmwX4U9dwHo1tqWuLLcE4PauKLG+MkDpZHdSsnN7bSKqEgsWwBLSxI3oe9itzmFB75GeCG00/5MQsHFnI8MFWQCX86u5lLrgkNPCWuwKDdgYZkbia0Nfxgb4dzfixcJBG1jBtmCYh+XcHzYSsN5OnZ86/UT53tn0BV1i2q3iqGHODb0nrNsYMiypS3I5ewpFtJbH06R5kb/0OIT3jXIujn+1UUvBOCvROjWJZhlVfd0eWn9IKXkfxCssfD1JeThlDFcrYtC7VD9FwY1RstB5Lz/D3PD9iujO8z3GFJTcG9tlGvnNbWUa4zYhQTkjRPHLxJUxipoJBCQQYNjOdqpy7GL8gmU52eMWZDzFhebnLdZr5Ff4PNkO4GDnzRvhlJdsuJFLRG5XtRS87lgHhSSwZmLW1ZDHbX4vgfUlaZ46Gwq2g1rtf/GHD+zLRFToXgTXTMwbmvZs4itxdpfBuMtoMuTprUoAkryvOtWDF2z/fyNxPtIqXjeXohE5EQBRzuW4emb+ehvvQ3eqlc4jpa8DMOe+f1J0SP11Xmwd5zLKrh6nL9HbwBDmgaypJYhdiuj0k6TeAhy4dTuUOaERGJFPp+M8rb0kOViJxVHyvCwS7gsaYNZ/QRK8X8WsU81yeki38=" # DOCKER_USER
+    - secure: "xXcnCbGL1Ovb/RzNm81J53ydfCgtcp1ls0dICa9E2tubchitUYLwiuUrP48lIyAO2O6PUeSw8Ap6X/hK8GSngeA56vsopkjunztgvkdtlOAF/CGgVM4FzGPDzEVobpomhdIznaK2y9c3xa85uZOUa88WMIjJukA2SSGlb5sHrzcGLZKC1TFUqRxEeIMz2CMVA564yBHdeepILceWRM3kQ7tUFfKGqRqHdtBPNnkxzDQhGTXO/LaGf5AmODCpylhFkoc9JnJay6fuZGQD6Yk61h/mQtTJ48IwfnzAMNnvscCbGdElW7VZwWYQReryu8dNxpnl7dhGZKXxhNAdRpITyT0y69rKLdQSwOSfR9wXaAIHVLHwnssVb12oHhs5/hQ/G9k9Tr3Os7xqgNMqbWtqQiZdpebu+khrN0xs/jm5+2E63S5egXK3fMNIkCft8zwfzIRC+jYhoMqDLGSUmQDnpOjwIi6ek1l8oOjMeY5kJeLEHI7sy6XTqKQRS3MQVx1u3eKQ88jYMtdX1AUrCdZhTmc5TgrM0WKaJS2p61tBGn9n0eOl8x7gNLT8RtzzzaF+MjkOPhN8NnmsMQqORthxFYwMvSFA71SR0jrJzzgH2hBKvqVSVO657JHsuE5IsaEZfagpklCHRItlWTo9hkBzRokqejXAgxUIywMRbT90QYA=" # DOCKER_PASS
+    - COMMIT=${TRAVIS_COMMIT::6}
