@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /usr/local/apache2/logs/httpd.pid
+
+# Old Command
+#exec apache2 -DFOREGROUND
+
+apachectl -DFOREGROUND

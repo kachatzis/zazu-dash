@@ -1,0 +1,28 @@
+# X-XSS-Protection
+Header set X-XSS-Protection "1; mode=block"
+
+# Protect Against ClickJacking (CSRF)
+Header always append X-Frame-Options DENY
+
+# Anti-MIME-Sniffing Header
+Header set X-Content-Type-Options nosniff
+
+# Set Cookies HTTPOnly and Secure
+php_value session.cookie_httponly 1
+#php_value session.cookie_secure 1
+
+# Only allow JavaScript from the same domain to be run.
+# Don't allow inline JavaScript to run.
+Header set X-Content-Security-Policy "allow 'self';"
+
+# Rewrite
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
+
+# Session Duration
+#<IfModule mod_php7.c>
+    #Session timeout
+    #php_value session.cookie_lifetime 360000
+    #php_value session.gc_maxlifetime 360000
+#</IfModule>

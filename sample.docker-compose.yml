@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  dev:
+    image: oinker/zazu-dash
+    ports:
+      - 80:80
+    volumes:
+      - ./src/public:/var/www/html
+    environment:
+        - API_BASE_URI=https://#/api/v2/#/_table
+        - API_KEY=#
+        - SECONDS_BETWEEN_LOGIN_TRIES=7
+        - SECONDS_FIRST_LOGIN_TRY=7
+        - PASSWORD_SALT=#
+        - INFO_SALT=#
+        - MAINTENANCE_MODE=0
+
