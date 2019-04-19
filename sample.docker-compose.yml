@@ -15,4 +15,8 @@ services:
         - PASSWORD_SALT=#
         - INFO_SALT=#
         - MAINTENANCE_MODE=0
+        - MANAGER_SIGNUP=0
+        - TIMEZONE=Europe/Athens
+        - HEADER_TITLE=ZAZU by PiSquared
+        - GENERAL_CHRISTMAS_MODE=0
 
